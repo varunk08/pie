@@ -13,17 +13,31 @@ def fireBullet(aiSettings, bullets, screen, ship):
         newBullet = Bullet(aiSettings, screen, ship)
         bullets.add(newBullet)
 
-def createFleet(aiSettings, screen, aliens):
+def getNumRows(aiSettings, shipHeight, alienHeight):
+    availableHeight = aiSettings.screenHeight - 3 * alienHeight - shipHeight
+    return int(availableHeight / (2 * alienHeight))
+
+def createAlien(aiSettings, screen, aliens,  alienNum, rowNum):
     alien = Alien(aiSettings, screen)
     alienWidth = alien.rect.width
+    alien.x = alienWidth + 2 * alienWidth * alienNum
+    alien.rect.x = alien.x
+    alien.rect.y = alien.rect.height + 2 * alien.rect.height * rowNum
+    aliens.add(alien)
+ 
+def getNumAliens(aiSettings, alienWidth):
     availableSpace = aiSettings.screenWidth - (2 * alienWidth)
     numAliens = int(availableSpace / (2 * alienWidth))
+    return numAliens
 
-    for alienNum in range(numAliens):
-        alien = Alien(aiSettings, screen)
-        alien.x = alienWidth + 2 * alienWidth * alienNum
-        alien.rect.x = alien.x
-        aliens.add(alien)
+def createFleet(aiSettings, screen, aliens, ship):
+    alien = Alien(aiSettings, screen)
+    numRows = getNumRows(aiSettings, ship.rect.height, alien.rect.height)
+    numAliensPerRow = getNumAliens(aiSettings, alien.rect.width)
+
+    for rowNum in range(numRows):
+        for alienNum in range(numAliensPerRow):
+            createAlien(aiSettings, screen, aliens, alienNum, rowNum)
 
 def checkKeyDownEvents(event, aiSettings, screen, ship, bullets):
     """ Responds to key presses """
