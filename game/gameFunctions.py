@@ -3,10 +3,15 @@ import pygame
 from bullet import Bullet
 from alien import Alien
 
-def updateBullets(bullets):
+def updateBullets(aiSettings, bullets, aliens, screen, ship):
+    bullets.update()
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
+    collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+    if len(aliens) == 0:
+        bullets.empty()
+        createFleet(aiSettings, screen, aliens, ship)
 
 def fireBullet(aiSettings, bullets, screen, ship):
     if len(bullets) < aiSettings.bulletsAllowed:
@@ -34,7 +39,6 @@ def createFleet(aiSettings, screen, aliens, ship):
     alien = Alien(aiSettings, screen)
     numRows = getNumRows(aiSettings, ship.rect.height, alien.rect.height)
     numAliensPerRow = getNumAliens(aiSettings, alien.rect.width)
-
     for rowNum in range(numRows):
         for alienNum in range(numAliensPerRow):
             createAlien(aiSettings, screen, aliens, alienNum, rowNum)
@@ -70,13 +74,24 @@ def checkEvents(aiSettings, screen, ship, bullets):
 
 def updateScreen(aiSettings, screen, ship, bullets, aliens):
     """ Update images on the screen and flip to the new screen. """
-
     screen.fill(aiSettings.screenBgColor)
-    
     for bullet in bullets.sprites():
         bullet.drawBullet()
-
     ship.blitme()
     aliens.draw(screen)
-
     pygame.display.flip()
+
+def updateAliens(aiSettings, aliens):
+    checkFleetEdges(aiSettings, aliens)
+    aliens.update()
+
+def changeFleetDirection(aiSettings, aliens):
+    for alien in aliens.sprites():
+        alien.rect.y += aiSettings.fleetDropSpeed
+    aiSettings.fleetDirection *= -1
+
+def checkFleetEdges(aiSettings, aliens):
+    for alien in aliens.sprites():
+        if alien.checkEdges():
+            changeFleetDirection(aiSettings, aliens)
+            break

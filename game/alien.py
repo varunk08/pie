@@ -16,3 +16,15 @@ class Alien(Sprite):
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)
+
+    def update(self):
+        self.x += (self.aiSettings.fleetDirection * 
+                   self.aiSettings.alienSpeedFactor)
+        self.rect.x = self.x
+
+    def checkEdges(self):
+        screenRect = self.screen.get_rect()
+        if self.rect.right >= screenRect.right:
+            return True
+        elif self.rect.left <= 0:
+            return True
