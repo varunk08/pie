@@ -23,11 +23,11 @@ def runGame():
     sb = Scoreboard(aiSettings, screen, stats)
 
     while True:
-        gf.checkEvents(aiSettings, screen, ship, bullets, aliens, stats, playButton)
+        gf.checkEvents(aiSettings, screen, ship, bullets, aliens, stats, playButton, sb)
         if stats.gameActive:
             ship.update()
             gf.updateBullets(aiSettings, bullets, aliens, screen, ship, stats, sb)
-            gf.updateAliens(aiSettings, stats, screen, aliens, bullets, ship)
+            gf.updateAliens(aiSettings, stats, screen, aliens, bullets, ship, sb)
         gf.updateScreen(aiSettings, screen, ship, bullets, aliens, stats, playButton, sb)
 
 
