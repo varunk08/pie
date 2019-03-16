@@ -22,6 +22,7 @@ class Settings():
         self.speedupScale = 1.1
         self.shipLimit = 3
 
+        self.scoreScale = 1.5
         self.initializeDynamicSettings()
 
 
@@ -36,3 +37,4 @@ class Settings():
         self.shipSpeedFactor *= self.speedupScale
         self.bulletSpeedFactor *= self.speedupScale
         self.alienSpeedFactor *= self.speedupScale
+        self.alienPoints = int(self.alienPoints * self.scoreScale)

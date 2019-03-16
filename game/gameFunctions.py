@@ -20,8 +20,9 @@ def shipHit(aiSettings, stats, screen, ship, aliens, bullets):
 def checkBulletAlienCollisions(aiSettings, screen, ship, aliens, bullets, stats, sb):
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
     if collisions:
-        stats.score += aiSettings.alienPoints
-        sb.prepScore()
+        for aliens in collisions.values():
+            stats.score += aiSettings.alienPoints * len(aliens)
+            sb.prepScore()
     if len(aliens) == 0:
         bullets.empty()
         aiSettings.increaseSpeed()

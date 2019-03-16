@@ -4,6 +4,7 @@ class GameStats():
 		self.aiSettings = aiSettings
 		self.resetStats()
 		self.gameActive = False
+		self.highScore = 0
 
 	def resetStats(self):
 		self.shipsLeft = self.aiSettings.shipLimit

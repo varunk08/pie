@@ -15,6 +15,8 @@ class Scoreboard():
 
 	def prepScore(self):
 		scoreStr = str(self.stats.score)
+		roundedScore = int(round(self.stats.score, -1))
+		scoreStr = "{:,}".format(roundedScore)
 		self.scoreImage = self.font.render(scoreStr, True, self.textColor, self.aiSettings.screenBgColor)
 		self.scoreRect = self.scoreImage.get_rect()
 		self.scoreRect.right = self.screenRect.right - 20
