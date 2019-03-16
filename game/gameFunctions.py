@@ -14,21 +14,26 @@ def shipHit(aiSettings, stats, screen, ship, aliens, bullets):
         sleep(0.5)
     else:
         stats.gameActive = False
+        pygame.mouse.set_visible(True)
         
 
-def checkBulletAlienCollisions(aiSettings, screen, ship, aliens, bullets):
+def checkBulletAlienCollisions(aiSettings, screen, ship, aliens, bullets, stats, sb):
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+    if collisions:
+        stats.score += aiSettings.alienPoints
+        sb.prepScore()
     if len(aliens) == 0:
         bullets.empty()
+        aiSettings.increaseSpeed()
         createFleet(aiSettings, screen, aliens, ship)
 
 
-def updateBullets(aiSettings, bullets, aliens, screen, ship):
+def updateBullets(aiSettings, bullets, aliens, screen, ship, stats, sb):
     bullets.update()
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
-    checkBulletAlienCollisions(aiSettings, screen, ship, aliens, bullets)
+    checkBulletAlienCollisions(aiSettings, screen, ship, aliens, bullets, stats, sb)
 
 
 def fireBullet(aiSettings, bullets, screen, ship):
@@ -87,7 +92,10 @@ def checkKeyUpEvents(event, ship):
 
 
 def checkPlayButton(aiSettings, screen, ship, aliens, bullets, stats, playButton, mouseX, mouseY):
-    if playButton.rect.collidepoint(mouseX, mouseY):
+    buttonClicked = playButton.rect.collidepoint(mouseX, mouseY)
+    if buttonClicked and not stats.gameActive:
+        aiSettings.initializeDynamicSettings()
+        pygame.mouse.set_visible(False)
         stats.resetStats()
         stats.gameActive = True
         aliens.empty()
@@ -109,13 +117,14 @@ def checkEvents(aiSettings, screen, ship, bullets, aliens, stats, playButton):
             checkPlayButton(aiSettings, screen, ship, aliens, bullets, stats, playButton, mouseX, mouseY)
 
 
-def updateScreen(aiSettings, screen, ship, bullets, aliens, stats, playButton):
+def updateScreen(aiSettings, screen, ship, bullets, aliens, stats, playButton, sb):
     """ Update images on the screen and flip to the new screen. """
     screen.fill(aiSettings.screenBgColor)
     for bullet in bullets.sprites():
         bullet.drawBullet()
     ship.blitme()
     aliens.draw(screen)
+    sb.showScore()
     if not stats.gameActive:
         playButton.drawButton()
     pygame.display.flip()

@@ -19,5 +19,20 @@ class Settings():
         self.alienSpeedFactor = 1
         self.fleetDropSpeed = 10
         self.fleetDirection = 1
-
+        self.speedupScale = 1.1
         self.shipLimit = 3
+
+        self.initializeDynamicSettings()
+
+
+    def initializeDynamicSettings(self):
+        self.shipSpeedFactor = 1.5
+        self.bulletSpeedFactor = 3
+        self.alienSpeedFactor = 1
+        self.alienPoints = 50
+
+
+    def increaseSpeed(self):
+        self.shipSpeedFactor *= self.speedupScale
+        self.bulletSpeedFactor *= self.speedupScale
+        self.alienSpeedFactor *= self.speedupScale
