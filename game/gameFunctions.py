@@ -42,7 +42,7 @@ def getNumRows(aiSettings, shipHeight, alienHeight):
     return int(availableHeight / (2 * alienHeight))
 
 
-def createAlien(aiSettings, screen, aliens,  alienNum, rowNum):
+def createAlien(aiSettings, screen, aliens, alienNum, rowNum):
     alien = Alien(aiSettings, screen)
     alienWidth = alien.rect.width
     alien.x = alienWidth + 2 * alienWidth * alienNum
@@ -86,7 +86,16 @@ def checkKeyUpEvents(event, ship):
         ship.movingLeft = False
 
 
-def checkEvents(aiSettings, screen, ship, bullets):
+def checkPlayButton(aiSettings, screen, ship, aliens, bullets, stats, playButton, mouseX, mouseY):
+    if playButton.rect.collidepoint(mouseX, mouseY):
+        stats.resetStats()
+        stats.gameActive = True
+        aliens.empty()
+        bullets.empty()
+        createFleet(aiSettings, screen, aliens, ship)
+        ship.centerShip()
+
+def checkEvents(aiSettings, screen, ship, bullets, aliens, stats, playButton):
     """ Respond to key presses and mouse events"""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -95,15 +104,20 @@ def checkEvents(aiSettings, screen, ship, bullets):
             checkKeyDownEvents(event, aiSettings, screen, ship, bullets)
         elif event.type == pygame.KEYUP:
             checkKeyUpEvents(event, ship)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouseX, mouseY = pygame.mouse.get_pos()
+            checkPlayButton(aiSettings, screen, ship, aliens, bullets, stats, playButton, mouseX, mouseY)
 
 
-def updateScreen(aiSettings, screen, ship, bullets, aliens):
+def updateScreen(aiSettings, screen, ship, bullets, aliens, stats, playButton):
     """ Update images on the screen and flip to the new screen. """
     screen.fill(aiSettings.screenBgColor)
     for bullet in bullets.sprites():
         bullet.drawBullet()
     ship.blitme()
     aliens.draw(screen)
+    if not stats.gameActive:
+        playButton.drawButton()
     pygame.display.flip()
 
 

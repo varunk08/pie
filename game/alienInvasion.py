@@ -6,6 +6,7 @@ from ship import Ship
 import gameFunctions as gf
 from alien import Alien
 from gameStats import GameStats
+from button import Button
 
 def runGame():
     pygame.init()
@@ -17,14 +18,15 @@ def runGame():
     bullets = Group()
     aliens = Group()
     gf.createFleet(aiSettings, screen, aliens, ship)
-    
+    playButton = Button(aiSettings, screen, "Play")
+
     while True:
-        gf.checkEvents(aiSettings, screen, ship, bullets)
+        gf.checkEvents(aiSettings, screen, ship, bullets, aliens, stats, playButton)
         if stats.gameActive:
             ship.update()
             gf.updateBullets(aiSettings, bullets, aliens, screen, ship)
             gf.updateAliens(aiSettings, stats, screen, aliens, bullets, ship)
-        gf.updateScreen(aiSettings, screen, ship, bullets, aliens)
+        gf.updateScreen(aiSettings, screen, ship, bullets, aliens, stats, playButton)
 
 
 runGame()
