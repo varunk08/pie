@@ -1,4 +1,5 @@
 web app to log learning of users
+
 log topics they're interested in and make journal entries
 
 home page should describe the site and invite users to log in or register 
