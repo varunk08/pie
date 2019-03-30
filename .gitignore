@@ -1,4 +1,4 @@
 webApps/db.sqlite3
-webApps/ll_env/*
-__pycache__/*
+ll_env/
+__pycache__/
 */migrations/*
