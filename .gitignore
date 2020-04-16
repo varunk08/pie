@@ -1,3 +1,7 @@
-*.pyc
-
-*/__pycache__/
+<<<<<<< HEAD
+=======
+webApps/db.sqlite3
+ll_env/
+__pycache__/
+*/migrations/*
+>>>>>>> 76c79a8b98f3a9e56f447d8c28beb17ebcd74327
