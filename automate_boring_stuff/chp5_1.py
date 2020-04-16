@@ -1,0 +1,21 @@
+import pprint
+
+myCat = {
+    'size': 'fat',
+    'color': 'gray',
+    'disposition': 'loud'
+}
+
+
+for k, v in myCat.items():
+    print(k + " " + v)
+
+message = 'It was a bright cold day in April, and the clocks were striking thirteen'
+count = {}
+
+for character in message:
+    count.setdefault(character, 0)
+    count[character] = count[character] + 1
+
+
+print(pprint.pformat(count))
