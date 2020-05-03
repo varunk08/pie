@@ -1,7 +1,7 @@
 #! python3
 import shutil
 import os
-import send2trash
+#import send2trash
 import zipfile
 
 print('Simple script for expt with shutil')
@@ -37,8 +37,8 @@ for folderName, subFolders, fileNames in os.walk(os.getcwd()):
     print('')
 
 newZip = zipfile.ZipFile('compressed.zip', 'w')
-if fileName != 'compressed.zip':
-    newZip.write(os.path.join(fileName), compress_type=zipfile.ZIP_DEFLATED)
+for fileName in os.listdir(os.getcwd()):
+	newZip.write(fileName, compress_type=zipfile.ZIP_DEFLATED)
 newZip.close()
 
 print('Deleting testDirC')
