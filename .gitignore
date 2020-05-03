@@ -2,3 +2,5 @@ webApps/db.sqlite3
 ll_env/
 __pycache__/
 */migrations/*
+*.sublime-project
+*.sublime-workspace
